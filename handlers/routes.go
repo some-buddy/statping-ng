@@ -6,7 +6,7 @@ import (
 
 	"github.com/gorilla/mux"
 	"github.com/prometheus/client_golang/prometheus/promhttp"
-	"github.com/statping-ng/statping-ng/middleware"
+	"github.com/some-buddy/statping-ng/middleware"
 	"github.com/statping-ng/statping-ng/source"
 	"github.com/statping-ng/statping-ng/types/core"
 	"github.com/statping-ng/statping-ng/utils"

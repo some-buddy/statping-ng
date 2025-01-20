@@ -1,4 +1,4 @@
-module github.com/statping-ng/statping-ng
+module github.com/some-buddy/statping-ng
 
 go 1.19
 
@@ -34,6 +34,11 @@ require (
 )
 
 require (
+	github.com/form3tech-oss/jwt-go v3.2.5+incompatible
+	github.com/statping-ng/statping-ng v0.92.0
+)
+
+require (
 	cloud.google.com/go v0.56.0 // indirect
 	github.com/Azure/azure-sdk-for-go v41.3.0+incompatible // indirect
 	github.com/Azure/go-autorest/autorest v0.10.0 // indirect
@@ -65,7 +70,6 @@ require (
 	github.com/gofrs/uuid v3.2.0+incompatible // indirect
 	github.com/golang/groupcache v0.0.0-20200121045136-8c9f03a8e57e // indirect
 	github.com/golang/protobuf v1.4.2 // indirect
-	github.com/gomarkdown/markdown v0.0.0-20221013030248-663e2500819c // indirect
 	github.com/google/go-cmp v0.5.9 // indirect
 	github.com/google/go-querystring v1.0.0 // indirect
 	github.com/google/uuid v1.3.0 // indirect
@@ -113,9 +117,8 @@ require (
 	github.com/spf13/cast v1.3.1 // indirect
 	github.com/spf13/jwalterweatherman v1.1.0 // indirect
 	github.com/spf13/pflag v1.0.5 // indirect
+	github.com/statping/emails v1.0.0 // indirect
 	github.com/subosito/gotenv v1.2.0 // indirect
-	github.com/tdewolff/minify/v2 v2.12.4 // indirect
-	github.com/tdewolff/parse/v2 v2.6.4 // indirect
 	github.com/timewasted/linode v0.0.0-20160829202747-37e84520dcf7 // indirect
 	github.com/transip/gotransip/v6 v6.0.2 // indirect
 	github.com/vultr/govultr v0.3.3 // indirect
@@ -137,3 +140,5 @@ require (
 	gopkg.in/square/go-jose.v2 v2.5.0 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 )
+
+replace github.com/statping-ng/statping-ng => github.com/some-buddy/statping-ng@feat/add-oauth-keycloak-handler
