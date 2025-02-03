@@ -98,8 +98,8 @@ func Router() *mux.Router {
 	api.Handle("/api/settings/configs", authenticated(configsSaveHandler, false)).Methods("POST")
 
 	// Intermediate Status Routes
-	api.Handle("/api/intermediate_status_config", authenticated(IntermediateStatusConfigViewHandler, false)).Methods("GET")
-	api.Handle("/api/intermediate_status_config", authenticated(IntermediateStatusConfigUpdateHandler, false)).Methods("PUT")
+	api.Handle("/api/outage_config", scoped(OutageConfigViewHandler, false)).Methods("GET")
+	api.Handle("/api/outage_config", scoped(OutageConfigUpdateHandler, false)).Methods("PUT")
 	
 	// API OAUTH Routes
 	api.Handle("/api/oauth", scoped(apiOAuthHandler)).Methods("GET")
@@ -132,6 +132,8 @@ func Router() *mux.Router {
 	api.Handle("/api/services/{id}/failures", authenticated(servicesDeleteFailuresHandler, false)).Methods("DELETE")
 	api.Handle("/api/services/{id}/hits", scoped(apiServiceHitsHandler)).Methods("GET")
 	api.Handle("/api/services/{id}/hits", authenticated(apiServiceHitsDeleteHandler, false)).Methods("DELETE")
+	api.Handle("/api/services/{id}/outage", scoped(apiServiceOutageHandler)).Methods("GET")
+	api.Handle("/api/services/{id}/outage", scoped(apiServiceUpdateOutageHandler)).Methods("PUT")
 
 	// API SERVICE CHART DATA Routes
 	api.Handle("/api/services/{id}/hits_data", http.HandlerFunc(apiServiceDataHandler)).Methods("GET")

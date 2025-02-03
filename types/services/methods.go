@@ -260,12 +260,12 @@ func SelectAllServices(start bool) (map[int64]*Service, error) {
 
 func (s *Service) UpdateStats() *Service {
 	// Si les statuts intermédiaires sont activés via l'API
-	if s.IntermediateStatusActive {
+	if s.OutageIsActive {
 		// Appliquer les statuts intermédiaires
-		if s.StatusMinorOutageName != "" {
+		if s.MinorOutageName != "" {
 			// Le service est en "Minor Outage"
 			s.Online = false
-		} else if s.StatusMajorOutageName != "" {
+		} else if s.MajorOutageName != "" {
 			// Le service est en "Major Outage"
 			s.Online = false
 		}
@@ -273,12 +273,12 @@ func (s *Service) UpdateStats() *Service {
 		// Sinon, gérer le statut classique du service (Online / Offline)
 		if s.Online == false {
 			// Le service est hors ligne
-			s.StatusMinorOutageName = "Offline"
-			s.StatusMinorOutageColor = "red"
+			s.MinorOutageName = "Offline"
+			s.MinorOutageColor = "red"
 		} else {
 			// Le service est en ligne
-			s.StatusMinorOutageName = "Online"
-			s.StatusMinorOutageColor = "green"
+			s.MinorOutageName = "Online"
+			s.MinorOutageColor = "green"
 		}
 	}
 
@@ -349,12 +349,12 @@ func (s Service) Downtime() utils.Duration {
 	return utils.Duration{Duration: utils.Now().Sub(s.LastOnline)}
 }
 
-// IntermediateStatus represents the intermediate status configuration for a service.
-type IntermediateStatus struct {
+// Outage represents the outage configuration for a service.
+type Outage struct {
 	ID                      int    `gorm:"primary_key"`
 	ServiceID               int    `gorm:"index"`
-	IntermediateStatusActive      bool   `gorm:"default:false"`
-	IntermediateStatusSeverity  string `gorm:"default:''"`
+	OutageIsActive      bool   `gorm:"default:false"`
+	OutageSeverity  string `gorm:"default:''"`
 }
 
 // InitializeService initializes the service with default values.
@@ -367,8 +367,8 @@ type IntermediateStatus struct {
 // 	}
 
 // 	if service.ID == 0 {
-// 		service.EnableIntermediate = false
-// 		service.IntermediateStatusName = ""
+// 		service.EnableOutage = false
+// 		service.OutageName = ""
 // 		err := database.Database.Save(&service).Error
 // 		if err != nil {
 // 			return nil, fmt.Errorf("failed to save Service: %w", err)
@@ -388,30 +388,30 @@ type IntermediateStatus struct {
 // }
 
 // // Contrôleur pour gérer les services
-// func GetServicesWithIntermediateStatusHandler(c *gin.Context) {
-//     var servicesWithIntermediateStatus []Service
-//     if err := db.Where("is_intermediate_status = ?", true).Find(&servicesWithIntermediateStatus).Error; err != nil {
+// func GetServicesWithOutageHandler(c *gin.Context) {
+//     var servicesWithOutage []Service
+//     if err := db.Where("is_outage = ?", true).Find(&servicesWithOutage).Error; err != nil {
 //         c.JSON(http.StatusInternalServerError, gin.H{"error": "Unable to fetch services"})
 //         return
 //     }
-//     c.JSON(http.StatusOK, servicesWithIntermediateStatus)
+//     c.JSON(http.StatusOK, servicesWithOutage)
 // }
 
-// // Fonction pour créer un service avec les valeurs par défaut pour IntermediateStatusName
+// // Fonction pour créer un service avec les valeurs par défaut pour OutageName
 // func CreateService(db *gorm.DB) error {
 //     // Définir les valeurs du service
 //     service := Service{
-//         StatusMinorOutageName:  "Minor Outage",
-//         StatusMinorOutageColor: "Yellow",
-//         StatusMajorOutageName:  "Major Outage",
-//         StatusMajorOutageColor: "Orange",
-//         EnableIntermediateStatuses: true,
-//         IsIntermediateStatus:   true,
+//         MinorOutageName:  "Minor Outage",
+//         MinorOutageColor: "Yellow",
+//         MajorOutageName:  "Major Outage",
+//         MajorOutageColor: "Orange",
+//         EnableOutage: true,
+//         IsOutage:   true,
 //     }
 
-//     // Si le champ IntermediateStatusName est vide, définir une valeur par défaut
-//     if service.IntermediateStatusName == "" {
-//         service.IntermediateStatusName = "minor"
+//     // Si le champ OutageName est vide, définir une valeur par défaut
+//     if service.OutageName == "" {
+//         service.OutageName = "minor"
 //     }
 
 //     // Sauvegarder la nouvelle entrée dans la base de données

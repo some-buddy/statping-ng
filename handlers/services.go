@@ -304,6 +304,7 @@ func apiServiceFailuresHandler(r *http.Request) interface{} {
 	return fails
 }
 
+// apiServiceHitsHandler handles the request to retrieve hits for a service.
 func apiServiceHitsHandler(r *http.Request) interface{} {
 	service, err := findService(r)
 	if err != nil {
@@ -316,4 +317,63 @@ func apiServiceHitsHandler(r *http.Request) interface{} {
 	}
 	query.Find(&hts)
 	return hts
+}
+
+// apiServiceOutageHandler handles the GET request to retrieve the outage status of a service.
+func apiServiceOutageHandler(r *http.Request) {
+	service, err := findService(r)
+	if err != nil {
+		return err
+	}
+
+	outage := map[string]interface{}{
+		"enable_outage": service.EnableIntermediate,
+		"minor_outage_name":   service.StatusMinorOutageName,
+		"minor_outage_color":  service.StatusMinorOutageColor,
+		"major_outage_name":   service.StatusMajorOutageName,
+		"major_outage_color":  service.StatusMajorOutageColor,
+	}
+
+	returnJson(outage, w, r)
+}
+
+// apiServiceUpdateOutageHandler handles the PUT request to update the outage status of a service.
+func apiServiceUpdateOutageHandler(w http.ResponseWriter, r *http.Request) {
+	vars := mux.Vars(r)
+	serviceID := utils.ToInt(vars["id"])
+
+	service, err := services.Find(serviceID)
+	if err != nil {
+		sendErrorJson(errors.New("service not found"), w, r)
+		return
+	}
+
+	var outageStatus map[string]interface{}
+	if err := DecodeJSON(r, &outageStatus); err != nil {
+		sendErrorJson(err, w, r)
+		return
+	}
+
+	if enableIntermediate, ok := outageStatus["enable_intermediate"].(bool); ok {
+		service.EnableIntermediate = enableIntermediate
+	}
+	if minorOutageName, ok := outageStatus["minor_outage_name"].(string); ok {
+		service.StatusMinorOutageName = minorOutageName
+	}
+	if minorOutageColor, ok := outageStatus["minor_outage_color"].(string); ok {
+		service.StatusMinorOutageColor = minorOutageColor
+	}
+	if majorOutageName, ok := outageStatus["major_outage_name"].(string); ok {
+		service.StatusMajorOutageName = majorOutageName
+	}
+	if majorOutageColor, ok := outageStatus["major_outage_color"].(string); ok {
+		service.StatusMajorOutageColor = majorOutageColor
+	}
+
+	if err := service.Update(); err != nil {
+		sendErrorJson(err, w, r)
+		return
+	}
+
+	sendJsonAction(service, "update", w, r)
 }

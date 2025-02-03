@@ -40,11 +40,11 @@ type DbConfig struct {
 	AdminEmail    string `yaml:"admin_email,omitempty" json:"admin_email"`
 
 	// New fields for Intermediate Statuses
-	StatusMinorOutageName   	string 	`gorm:"column:status_minor_outage_name" json:"status_minor_outage_name"`
-	StatusMinorOutageColor  	string 	`gorm:"column:status_minor_outage_color" json:"status_minor_outage_color"`
-	StatusMajorOutageName   	string 	`gorm:"column:status_major_outage_name" json:"status_major_outage_name"`
-	StatusMajorOutageColor  	string 	`gorm:"column:status_major_outage_color" json:"status_major_outage_color"`
-	EnableIntermediateStatuses 	bool 	`gorm:"column:enable_intermediate_statuses" json:"enable_intermediate_statuses"`
+	MinorOutageName   	string 	`gorm:"column:minor_outage_name" json:"minor_outage_name"`
+	MinorOutageColor  	string 	`gorm:"column:minor_outage_color" json:"minor_outage_color"`
+	MajorOutageName   	string 	`gorm:"column:major_outage_name" json:"major_outage_name"`
+	MajorOutageColor  	string 	`gorm:"column:major_outage_color" json:"major_outage_color"`
+	EnableOutage 	bool 	`gorm:"column:enable_outage" json:"enable_outage"`
 
 	MaxOpenConnections int `yaml:"db_open_connections,omitempty" json:"db_open_connections"`
 	MaxIdleConnections int `yaml:"db_idle_connections,omitempty" json:"db_idle_connections"`

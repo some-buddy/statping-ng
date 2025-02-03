@@ -282,37 +282,48 @@ class Api {
     await axios.all([all])
   }
 
-  async setServiceOutage(id, outageType, active) {
-    const data = {
-      outageType: outageType,
-      active: active
-    };
-    return axios.post(`api/services/${id}/outage`, data).then(response => response.data);
+  async updateServiceOutage(serviceId, outageStatus) {
+    try {
+      const response = await axios.put(`/api/services/${serviceId}/outage`, outageStatus);
+      return response.data;  // Returns updated service data after the PUT request
+    } catch (error) {
+      console.error('Error updating service outage data:', error);
+      throw error;
+    }
+  }  
+  
+  async getServiceOutage(serviceId) {
+    try {
+      const response = await axios.get(`/api/services/${serviceId}/outage`);
+      return response.data;  // Returns outage data like enable_outage, minor/major outage names/colors
+    } catch (error) {
+      console.error('Error fetching service outage data:', error);
+      throw error;
+    }
   }
   
-  async getServiceOutage(id) {
-    return axios.get(`api/services/${id}/outage`).then(response => response.data);
-  }
-
   // Récupère les services et leurs statuts intermédiaires actifs
-  async getServicesWithIntermediateStatus() {
+  async getServicesWithOutage() {
     const services = await axios.get('api/services');
-    const statusConfig = await axios.get('api/intermediate-status-config');
-    return { services: services.data, statusConfig: statusConfig.data };
+    const outageConfig = await axios.get('api/outage_config');
+    return { services: services.data, outageConfig: outageConfig.data };
   }
 
-  async toggleIntermediateStatus(serviceId, active, severity) {
-    const statusConfig = await axios.get('api/intermediate-status-config');
-    const statusName = severity === 'minor' ? statusConfig.data.minor.name : statusConfig.data.major.name;
-    const statusColor = severity === 'minor' ? statusConfig.data.minor.color : statusConfig.data.major.color;
+  async toggleOutage(serviceId, active, severity) {
+    const outageConfig = await axios.get('api/outage_config');
+    // const outageName = severity === 'minor' ? outageConfig.data.minor.name : outageConfig.data.major.name;
+    // const outageColor = severity === 'minor' ? outageConfig.data.minor.color : outageConfig.data.major.color;
   
-    await axios.post(`api/services/${serviceId}/update-intermediate-status`, {
+    await axios.put(`api/services/${serviceId}/outage`, {
       active: active,
       severity: severity,
-      name: statusName,
-      color: statusColor
     });
   }  
+
+  // Method to get the outage configuration
+  async getOutageConfig() {
+    return axios.get('api/outage_config').then(response => response.data);
+  }
 
 }
 const api = new Api()

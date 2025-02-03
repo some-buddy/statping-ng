@@ -40,10 +40,8 @@ export default new Vuex.Store({
       btnColor: "btn-primary",
       func: null,
     },
-    outages: {
-      minorOutage: false,
-      majorOutage: false,
-    },
+    outageConfig: {},
+    statusColors: {}
   },
   getters: {
     hasAllData: state => state.hasAllData,
@@ -106,6 +104,8 @@ export default new Vuex.Store({
     messageById: (state) => (id) => {
       return state.messages.find(m => m.id === id)
     },
+    getOutageConfig: (state) => state.outageConfig,
+    getStatusColors: (state) => state.statusColors,
   },
   mutations: {
     setHasAllData(state, bool) {
@@ -156,22 +156,24 @@ export default new Vuex.Store({
     setModal(state, modal) {
       state.modal = modal
     },
-    setMinorOutage(state, minorOutage) {
-      state.outages.minorOutage = minorOutage;
-    },
-    setMajorOutage(state, majorOutage) {
-      state.outages.majorOutage = majorOutage;
-    },
-      // Met à jour l'état du service avec les informations du statut intermédiaire
-    setServiceStatus(state, { serviceId, intermediateStatusActive, severity, name, color }) {
-      const service = state.services.find(s => s.id === serviceId);
+    setServiceOutage(state, { serviceId, outageIsActive, outageType}) {
+      const service = state.services.find(s => s.Id === serviceId);
       if (service) {
-        service.intermediateStatusActive = intermediateStatusActive;
-        service.severity = severity;
-        service.intermediateStatusName = name;
-        service.intermediateStatusColor = color;
+        service.outageIsActive = outageIsActive;
+        service.outageType = outageType;
+        service.outageName = outageName
+        ser
       }
-  }
+    },    
+    setStatusColors(state, colors) {
+      state.statusColors = {
+        ...state.statusColors,
+        ...colors
+      }
+    },
+    setOutageConfig(state, config) {
+      state.outageConfig = config;
+    },
   },
   actions: {
     async getAllServices(context) {
@@ -214,22 +216,44 @@ export default new Vuex.Store({
       const oauth = await Api.oauth()
       context.commit("setOAuth", oauth);
     },
-    updateMinorOutage(context, minorOutage) {
-      context.commit("setMinorOutage", minorOutage);
-    },
-    updateMajorOutage(context, majorOutage) {
-      context.commit("setMajorOutage", majorOutage);
-    },
-    async fetchServiceOutages({ commit }) {
+    async fetchServicesOutages(context) {
       const services = await Api.services();
       services.forEach(service => {
-        commit('SET_SERVICE_OUTAGE', {
-          serviceId: service.id,
-          outageActive: service.outageActive,
+        context.commit('setServiceOutage', {
+          outageIsActive: service.outageIsActive,
           outageType: service.outageType,
-          outageColor: service.outageType === 'minor' ? 'yellow' : 'orange',
         });
       });
+    },    
+    async fetchStatusColors(context) {
+      const config = await Api.getOutageConfig();
+      colors.minor_outage = config.MinorOutageColor
+      colors.major_outage = config.MajorOutageColor
+      context.commit('setStatusColors', colors);
+    },
+    async fetchOutageConfig(context) {
+      try {
+        const config = await Api.getOutageConfig();
+        context.commit('setOutageConfig', config);
+      } catch (error) {
+        console.error('Failed to fetch outage config:', error);
+      }
+    },
+    async fetchServiceOutage(context, serviceId) {
+      try {
+        const outageStatus = await Api.getServiceOutage(serviceId);
+        context.commit('setServiceOutage', { serviceId, outageStatus });
+      } catch (error) {
+        console.error('Failed to fetch service outage status:', error);
+      }
+    },
+    async updateServiceOutage(context, { serviceId, outageData }) {
+      try {
+        const updatedOutageStatus = await Api.updateServiceOutage(serviceId, outageData);
+        context.commit('setServiceOutage', { serviceId, updatedOutageStatus });
+      } catch (error) {
+        console.error('Failed to update service outage status:', error);
+      }
     },
   }
 });

@@ -180,6 +180,9 @@
         if (!this.$store.getters.hasPublicData) {
             await this.$store.dispatch('loadRequired')
         }
+        if (this.$store.getters.outageEnabled) {
+            await this.$store.dispatch('fetchStatusColors')
+        }
         this.$router.push('/')
     }
   },

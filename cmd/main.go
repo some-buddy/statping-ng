@@ -9,7 +9,7 @@ import (
 	"github.com/statping-ng/statping-ng/source"
 	"github.com/statping-ng/statping-ng/types/configs"
 	"github.com/statping-ng/statping-ng/types/core"
-	"github.com/statping-ng/statping-ng/types/intermediate_status"
+	"github.com/statping-ng/statping-ng/types/outage"
 	"github.com/statping-ng/statping-ng/types/metrics"
 	"github.com/statping-ng/statping-ng/types/services"
 	"github.com/statping-ng/statping-ng/utils"
@@ -133,14 +133,14 @@ func mainProcess() error {
 	}
 
 	// Charger la configuration des statuts intermédiaires
-	if utils.Params.GetBool("ENABLE_INTERMEDIATE_STATUSES") {
+	if utils.Params.GetBool("ENABLE_OUTAGE") {
 		// Initialize status configuration
-		intermediateStatusConfig, err := intermediate_status.InitializeFromConfig()
+		outageConfig, err := outage.InitializeFromConfig()
 		if err != nil {
 			log.Fatalf("Error initializing status config: %v", err)
 		}
 
-		log.Info("Intermediate statuses are enabled : %v", intermediateStatusConfig)
+		log.Info("Intermediate statuses are enabled : %v", outageConfig)
 	} else {
 		log.Info("Intermediate statuses are disabled.")
 	}

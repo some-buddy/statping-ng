@@ -28,11 +28,11 @@ func Save() error {
 		AllowReports:       p.GetBool("ALLOW_REPORTS"),
 
 		// Sauvegarde des statuts intermédiaires
-		StatusMinorOutageName:  p.GetString("STATUS_MINOR_OUTAGE_NAME"),
-		StatusMinorOutageColor: p.GetString("STATUS_MINOR_OUTAGE_COLOR"),
-		StatusMajorOutageName:  p.GetString("STATUS_MAJOR_OUTAGE_NAME"),
-		StatusMajorOutageColor: p.GetString("STATUS_MAJOR_OUTAGE_COLOR"),
-		EnableIntermediateStatuses: p.GetBool("ENABLE_INTERMEDIATE_STATUSES"),
+		MinorOutageName:  p.GetString("STATUS_MINOR_OUTAGE_NAME"),
+		MinorOutageColor: p.GetString("STATUS_MINOR_OUTAGE_COLOR"),
+		MajorOutageName:  p.GetString("STATUS_MAJOR_OUTAGE_NAME"),
+		MajorOutageColor: p.GetString("STATUS_MAJOR_OUTAGE_COLOR"),
+		EnableOutage: p.GetBool("ENABLE_OUTAGE"),
 
 		LetsEncryptEnable:  p.GetBool("LETSENCRYPT_ENABLE"),
 		LetsEncryptHost:    p.GetString("LETSENCRYPT_HOST"),
@@ -130,11 +130,11 @@ func LoadConfigs(cfgFile string) (*DbConfig, error) {
 		AllowReports:      p.GetBool("ALLOW_REPORTS"),
 
 		// Chargement des nouveaux paramètres de statut intermédiaire
-		StatusMinorOutageName:  p.GetString("STATUS_MINOR_OUTAGE_NAME"),
-		StatusMinorOutageColor: p.GetString("STATUS_MINOR_OUTAGE_COLOR"),
-		StatusMajorOutageName:  p.GetString("STATUS_MAJOR_OUTAGE_NAME"),
-		StatusMajorOutageColor: p.GetString("STATUS_MAJOR_OUTAGE_COLOR"),
-		EnableIntermediateStatuses: p.GetBool("ENABLE_INTERMEDIATE_STATUSES"),
+		MinorOutageName:  p.GetString("STATUS_MINOR_OUTAGE_NAME"),
+		MinorOutageColor: p.GetString("STATUS_MINOR_OUTAGE_COLOR"),
+		MajorOutageName:  p.GetString("STATUS_MAJOR_OUTAGE_NAME"),
+		MajorOutageColor: p.GetString("STATUS_MAJOR_OUTAGE_COLOR"),
+		EnableOutage: p.GetBool("ENABLE_OUTAGE"),
 
 		LetsEncryptEnable: p.GetBool("LETSENCRYPT_ENABLE"),
 		LetsEncryptHost:   p.GetString("LETSENCRYPT_HOST"),

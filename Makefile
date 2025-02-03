@@ -20,7 +20,7 @@ STATUS_MINOR_OUTAGE_NAME ?= "Minor Outage"
 STATUS_MINOR_OUTAGE_COLOR ?= "yellow"
 STATUS_MAJOR_OUTAGE_NAME ?= "Major Outage"
 STATUS_MAJOR_OUTAGE_COLOR ?= "orange"
-ENABLE_INTERMEDIATE_STATUSES ?= true
+ENABLE_OUTAGE ?= true
 
 all: build-deps compile install test build
 
@@ -53,7 +53,7 @@ local: clean frontend-build build
 	export STATUS_MINOR_OUTAGE_COLOR="${STATUS_MINOR_OUTAGE_COLOR}" && \
 	export STATUS_MAJOR_OUTAGE_NAME="${STATUS_MAJOR_OUTAGE_NAME}" && \
 	export STATUS_MAJOR_OUTAGE_COLOR="${STATUS_MAJOR_OUTAGE_COLOR}" && \
-	export ENABLE_INTERMEDIATE_STATUSES="${ENABLE_INTERMEDIATE_STATUSES}" && \
+	export ENABLE_OUTAGE="${ENABLE_OUTAGE}" && \
 	export DEBUG=true && \
 	./statping --port 8080
 

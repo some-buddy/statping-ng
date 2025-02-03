@@ -1,30 +1,19 @@
-<template>
-    <div :style="{ backgroundColor: statusColor }" class="service-status">
-      <span v-if="statusActive">
-        {{ statusName }}
-      </span>
-      <span v-else>
-        Service is online
-      </span>
-    </div>
-  </template>
-  
-  <script>
-  export default {
-    props: {
-      statusActive: Boolean, // Indique si le statut intermédiaire est actif
-      statusName: String,    // Nom du statut (Minor Outage ou Major Outage)
-      statusColor: String,   // Couleur associée au statut
-    },
-  };
-  </script>
-  
-  <style scoped>
-  .service-status {
-    padding: 10px;
-    border-radius: 5px;
-    color: white;
-    font-weight: bold;
+<script>
+export default {
+  computed: {
+    statusStyle() {
+      const baseColor = this.$store.state.services.find(service => service.id === this.service.id).outageColor;
+      return {
+        backgroundColor: baseColor,
+        borderColor: this.darkenColor(baseColor, 0.15)
+      }
+    }
   }
-  </style>
-  
+}
+</script>
+
+<template>
+  <div class="status-indicator" :style="statusStyle">
+    <!-- Icône -->
+  </div>
+</template>

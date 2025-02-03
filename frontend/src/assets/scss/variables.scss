@@ -50,3 +50,9 @@ $sm-border-radius: 0rem;
 $sm-service-background: #ffffff;
 $sm-padding: 0;
 $sm-service-stats-size: 1.5rem;
+
+:root {
+    // Couleurs par défaut (seront écrasées par les variables CSS)
+    --status-minor-outage: yellow;
+    --status-major-outage: orange;
+  }

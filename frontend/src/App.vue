@@ -1,16 +1,20 @@
 <template>
   <div id="app">
-    <router-view/>
+    <StatusColors>
+      <router-view/>
+    </StatusColors>
     <Footer v-if="$route.path !== '/setup'"/>
   </div>
 </template>
 
 <script>
   const Footer = () => import(/* webpackChunkName: "index" */ "./components/Index/Footer");
+  import StatusColors from '@/components/Theme/StatusColors.vue'
 
   export default {
     name: 'app',
     components: {
+      StatusColors,
       Footer
     },
     data() {

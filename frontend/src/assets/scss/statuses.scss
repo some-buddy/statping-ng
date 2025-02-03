@@ -1,0 +1,21 @@
+.status-minor_outage {
+    // Supprimer les références à $orange
+    border-color: var(--status-minor-outage-border);
+    animation: partial-pulse 2s infinite;
+    
+    svg {
+      color: var(--status-minor-outage-icon);
+    }
+  }
+  
+  .status-major_outage {
+    // Supprimer les références à $red
+    border-color: var(--status-major-outage-border);
+    animation: major-pulse 1.5s infinite;
+    
+    svg {
+      color: var(--status-major-outage-icon);
+    }
+  }
+  
+  // Garder les animations telles quelles

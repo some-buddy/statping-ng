@@ -61,7 +61,7 @@ func InitEnvs() {
 	Params.SetDefault("DISABLE_COLORS", false)
 
 	// Default values for new status variables
-	Params.SetDefault("ENABLE_INTERMEDIATE_STATUSES", false)
+	Params.SetDefault("ENABLE_OUTAGE", false)
 	Params.SetDefault("STATUS_MINOR_OUTAGE_NAME", "Minor Outage")
 	Params.SetDefault("STATUS_MINOR_OUTAGE_COLOR", "yellow")
 	Params.SetDefault("STATUS_MAJOR_OUTAGE_NAME", "Major Outage")
