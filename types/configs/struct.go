@@ -39,6 +39,13 @@ type DbConfig struct {
 	AdminPassword string `yaml:"admin_password,omitempty" json:"admin_password"`
 	AdminEmail    string `yaml:"admin_email,omitempty" json:"admin_email"`
 
+	// New fields for Intermediate Statuses
+	StatusMinorOutageName   	string 	`gorm:"column:status_minor_outage_name" json:"status_minor_outage_name"`
+	StatusMinorOutageColor  	string 	`gorm:"column:status_minor_outage_color" json:"status_minor_outage_color"`
+	StatusMajorOutageName   	string 	`gorm:"column:status_major_outage_name" json:"status_major_outage_name"`
+	StatusMajorOutageColor  	string 	`gorm:"column:status_major_outage_color" json:"status_major_outage_color"`
+	EnableIntermediateStatuses 	bool 	`gorm:"column:enable_intermediate_statuses" json:"enable_intermediate_statuses"`
+
 	MaxOpenConnections int `yaml:"db_open_connections,omitempty" json:"db_open_connections"`
 	MaxIdleConnections int `yaml:"db_idle_connections,omitempty" json:"db_idle_connections"`
 	MaxLifeConnections int `yaml:"db_max_life_connections,omitempty" json:"db_max_life_connections"`

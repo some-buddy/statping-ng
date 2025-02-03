@@ -15,6 +15,13 @@ PATH:=$(GOPATH)/bin:$(PATH)
 OS = freebsd linux openbsd
 ARCHS = 386 arm amd64 arm64
 
+# New environment variables for status configuration
+STATUS_MINOR_OUTAGE_NAME ?= "Minor Outage"
+STATUS_MINOR_OUTAGE_COLOR ?= "yellow"
+STATUS_MAJOR_OUTAGE_NAME ?= "Major Outage"
+STATUS_MAJOR_OUTAGE_COLOR ?= "orange"
+ENABLE_INTERMEDIATE_STATUSES ?= true
+
 all: build-deps compile install test build
 
 test: clean compile
@@ -41,7 +48,14 @@ up:
 	make print_details
 
 local: clean frontend-build build
-	export STATPING_DIR=./docker/statping/sqlite && ./statping --port 8080
+	export STATPING_DIR=./docker/statping/sqlite && \
+	export STATUS_MINOR_OUTAGE_NAME="${STATUS_MINOR_OUTAGE_NAME}" && \
+	export STATUS_MINOR_OUTAGE_COLOR="${STATUS_MINOR_OUTAGE_COLOR}" && \
+	export STATUS_MAJOR_OUTAGE_NAME="${STATUS_MAJOR_OUTAGE_NAME}" && \
+	export STATUS_MAJOR_OUTAGE_COLOR="${STATUS_MAJOR_OUTAGE_COLOR}" && \
+	export ENABLE_INTERMEDIATE_STATUSES="${ENABLE_INTERMEDIATE_STATUSES}" && \
+	export DEBUG=true && \
+	./statping --port 8080
 
 down:
 	docker compose -f docker-compose.yml -f dev/docker-compose.full.yml down --volumes --remove-orphans

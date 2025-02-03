@@ -97,6 +97,10 @@ func Router() *mux.Router {
 	api.Handle("/api/settings/configs", authenticated(configsViewHandler, false)).Methods("GET")
 	api.Handle("/api/settings/configs", authenticated(configsSaveHandler, false)).Methods("POST")
 
+	// Intermediate Status Routes
+	api.Handle("/api/intermediate_status_config", authenticated(IntermediateStatusConfigViewHandler, false)).Methods("GET")
+	api.Handle("/api/intermediate_status_config", authenticated(IntermediateStatusConfigUpdateHandler, false)).Methods("PUT")
+	
 	// API OAUTH Routes
 	api.Handle("/api/oauth", scoped(apiOAuthHandler)).Methods("GET")
 	api.Handle("/api/oauth", authenticated(apiUpdateOAuthHandler, false)).Methods("POST")

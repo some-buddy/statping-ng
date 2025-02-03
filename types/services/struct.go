@@ -65,6 +65,15 @@ type Service struct {
 
 	notifyAfterCount int64 `gorm:"-" json:"-" yaml:"-"`
 	prevOnline       bool  `gorm:"-" json:"-" yaml:"-"`
+
+	// New fields for intermediate statuses
+    StatusMinorOutageName    string `gorm:"column:status_minor_outage_name" json:"status_minor_outage_name" yaml:"status_minor_outage_name"`
+    StatusMinorOutageColor   string `gorm:"column:status_minor_outage_color" json:"status_minor_outage_color" yaml:"status_minor_outage_color"`
+    StatusMajorOutageName    string `gorm:"column:status_major_outage_name" json:"status_major_outage_name" yaml:"status_major_outage_name"`
+    StatusMajorOutageColor   string `gorm:"column:status_major_outage_color" json:"status_major_outage_color" yaml:"status_major_outage_color"`
+    EnableIntermediateStatuses bool   `gorm:"column:enable_intermediate_statuses" json:"enable_intermediate_statuses" yaml:"enable_intermediate_statuses"`
+    IntermediateStatusActive     bool   `gorm:"default:false" json:"intermediate_status_active" yaml:"has_intermediate_status"`
+    IntermediateStatusSeverity string `gorm:"default:'minor'" json:"intermediate_status_severity" yaml:"intermediate_status_severity"`
 }
 
 // ServiceOrder will reorder the services based on 'order_id' (Order)

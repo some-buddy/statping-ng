@@ -60,6 +60,13 @@ func InitEnvs() {
 	Params.SetDefault("LOGS_MAX_SIZE", 16)
 	Params.SetDefault("DISABLE_COLORS", false)
 
+	// Default values for new status variables
+	Params.SetDefault("ENABLE_INTERMEDIATE_STATUSES", false)
+	Params.SetDefault("STATUS_MINOR_OUTAGE_NAME", "Minor Outage")
+	Params.SetDefault("STATUS_MINOR_OUTAGE_COLOR", "yellow")
+	Params.SetDefault("STATUS_MAJOR_OUTAGE_NAME", "Major Outage")
+	Params.SetDefault("STATUS_MAJOR_OUTAGE_COLOR", "orange")
+
 	dbConn := Params.GetString("DB_CONN")
 	dbInt := Params.GetInt("DB_PORT")
 	if dbInt == 0 && dbConn != "sqlite" && dbConn != "sqlite3" {

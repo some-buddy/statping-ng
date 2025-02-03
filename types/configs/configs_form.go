@@ -27,6 +27,13 @@ func LoadConfigForm(r *http.Request) (*DbConfig, error) {
 	language := g("language")
 	reports, _ := strconv.ParseBool(g("send_reports"))
 
+	// New fields for Intermediate Statuses
+	statusMinorOutageName := g("status_minor_outage_name")
+	statusMinorOutageColor := g("status_minor_outage_color")
+	statusMajorOutageName := g("status_major_outage_name")
+	statusMajorOutageColor := g("status_major_outage_color")
+	enableIntermediateStatuses, _ := strconv.ParseBool(g("enable_intermediate_statuses"))
+
 	if project == "" || username == "" || password == "" {
 		err := errors.New("Missing required elements on setup form")
 		return nil, err
@@ -46,6 +53,11 @@ func LoadConfigForm(r *http.Request) (*DbConfig, error) {
 	p.Set("ADMIN_USER", username)
 	p.Set("ADMIN_PASSWORD", password)
 	p.Set("ADMIN_EMAIL", email)
+	p.Set("ENABLE_INTERMEDIATE_STATUSES", enableIntermediateStatuses)
+	p.Set("STATUS_MINOR_OUTAGE_NAME", statusMinorOutageName)
+	p.Set("STATUS_MINOR_OUTAGE_COLOR", statusMinorOutageColor)
+	p.Set("STATUS_MAJOR_OUTAGE_NAME", statusMajorOutageName)
+	p.Set("STATUS_MAJOR_OUTAGE_COLOR", statusMajorOutageColor)
 
 	confg := &DbConfig{
 		DbConn:       dbConn,
@@ -63,6 +75,13 @@ func LoadConfigForm(r *http.Request) (*DbConfig, error) {
 		Location:     utils.Directory,
 		Language:     language,
 		AllowReports: reports,
+
+		// Add the new config fields for status
+		StatusMinorOutageName:   	statusMinorOutageName,
+		StatusMinorOutageColor:  	statusMinorOutageColor,
+		StatusMajorOutageName:   	statusMajorOutageName,
+		StatusMajorOutageColor:  	statusMajorOutageColor,
+		EnableIntermediateStatuses: enableIntermediateStatuses,
 	}
 
 	return confg, nil

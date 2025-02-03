@@ -9,6 +9,7 @@ import (
 	"github.com/statping-ng/statping-ng/source"
 	"github.com/statping-ng/statping-ng/types/configs"
 	"github.com/statping-ng/statping-ng/types/core"
+	"github.com/statping-ng/statping-ng/types/intermediate_status"
 	"github.com/statping-ng/statping-ng/types/metrics"
 	"github.com/statping-ng/statping-ng/types/services"
 	"github.com/statping-ng/statping-ng/utils"
@@ -129,6 +130,19 @@ func sigterm() {
 func mainProcess() error {
 	if err := InitApp(); err != nil {
 		return err
+	}
+
+	// Charger la configuration des statuts intermédiaires
+	if utils.Params.GetBool("ENABLE_INTERMEDIATE_STATUSES") {
+		// Initialize status configuration
+		intermediateStatusConfig, err := intermediate_status.InitializeFromConfig()
+		if err != nil {
+			log.Fatalf("Error initializing status config: %v", err)
+		}
+
+		log.Info("Intermediate statuses are enabled : %v", intermediateStatusConfig)
+	} else {
+		log.Info("Intermediate statuses are disabled.")
 	}
 
 	services.LoadServicesYaml()

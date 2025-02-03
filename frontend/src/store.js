@@ -39,7 +39,11 @@ export default new Vuex.Store({
       btnText: "Save Changes",
       btnColor: "btn-primary",
       func: null,
-    }
+    },
+    outages: {
+      minorOutage: false,
+      majorOutage: false,
+    },
   },
   getters: {
     hasAllData: state => state.hasAllData,
@@ -152,6 +156,22 @@ export default new Vuex.Store({
     setModal(state, modal) {
       state.modal = modal
     },
+    setMinorOutage(state, minorOutage) {
+      state.outages.minorOutage = minorOutage;
+    },
+    setMajorOutage(state, majorOutage) {
+      state.outages.majorOutage = majorOutage;
+    },
+      // Met à jour l'état du service avec les informations du statut intermédiaire
+    setServiceStatus(state, { serviceId, intermediateStatusActive, severity, name, color }) {
+      const service = state.services.find(s => s.id === serviceId);
+      if (service) {
+        service.intermediateStatusActive = intermediateStatusActive;
+        service.severity = severity;
+        service.intermediateStatusName = name;
+        service.intermediateStatusColor = color;
+      }
+  }
   },
   actions: {
     async getAllServices(context) {
@@ -193,6 +213,23 @@ export default new Vuex.Store({
       context.commit("setUsers", users);
       const oauth = await Api.oauth()
       context.commit("setOAuth", oauth);
-    }
+    },
+    updateMinorOutage(context, minorOutage) {
+      context.commit("setMinorOutage", minorOutage);
+    },
+    updateMajorOutage(context, majorOutage) {
+      context.commit("setMajorOutage", majorOutage);
+    },
+    async fetchServiceOutages({ commit }) {
+      const services = await Api.services();
+      services.forEach(service => {
+        commit('SET_SERVICE_OUTAGE', {
+          serviceId: service.id,
+          outageActive: service.outageActive,
+          outageType: service.outageType,
+          outageColor: service.outageType === 'minor' ? 'yellow' : 'orange',
+        });
+      });
+    },
   }
 });

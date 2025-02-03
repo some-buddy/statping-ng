@@ -282,6 +282,38 @@ class Api {
     await axios.all([all])
   }
 
+  async setServiceOutage(id, outageType, active) {
+    const data = {
+      outageType: outageType,
+      active: active
+    };
+    return axios.post(`api/services/${id}/outage`, data).then(response => response.data);
+  }
+  
+  async getServiceOutage(id) {
+    return axios.get(`api/services/${id}/outage`).then(response => response.data);
+  }
+
+  // Récupère les services et leurs statuts intermédiaires actifs
+  async getServicesWithIntermediateStatus() {
+    const services = await axios.get('api/services');
+    const statusConfig = await axios.get('api/intermediate-status-config');
+    return { services: services.data, statusConfig: statusConfig.data };
+  }
+
+  async toggleIntermediateStatus(serviceId, active, severity) {
+    const statusConfig = await axios.get('api/intermediate-status-config');
+    const statusName = severity === 'minor' ? statusConfig.data.minor.name : statusConfig.data.major.name;
+    const statusColor = severity === 'minor' ? statusConfig.data.minor.color : statusConfig.data.major.color;
+  
+    await axios.post(`api/services/${serviceId}/update-intermediate-status`, {
+      active: active,
+      severity: severity,
+      name: statusName,
+      color: statusColor
+    });
+  }  
+
 }
 const api = new Api()
 export default api

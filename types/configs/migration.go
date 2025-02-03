@@ -16,6 +16,7 @@ import (
 	"github.com/statping-ng/statping-ng/types/groups"
 	"github.com/statping-ng/statping-ng/types/hits"
 	"github.com/statping-ng/statping-ng/types/incidents"
+	"github.com/statping-ng/statping-ng/types/intermediate_status"
 	"github.com/statping-ng/statping-ng/types/messages"
 	"github.com/statping-ng/statping-ng/types/services"
 	"github.com/statping-ng/statping-ng/types/users"
@@ -122,7 +123,7 @@ func (d *DbConfig) MigrateDatabase() error {
 	}
 
 	log.Infof("Migrating App to version: %s (%s)", utils.Params.GetString("VERSION"), utils.Params.GetString("COMMIT"))
-	if err := tx.Table("core").AutoMigrate(&core.Core{}); err.Error() != nil {
+	if err := tx.Table("core").AutoMigrate(&core.Core{}, &services.Service{}, &intermediate_status.IntermediateStatusConfig{}); err.Error() != nil {
 		tx.Rollback()
 		log.Errorln(fmt.Sprintf("Statping Database could not be migrated: %v", tx.Error()))
 		return tx.Error()
