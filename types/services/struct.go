@@ -71,7 +71,8 @@ type Service struct {
     MinorOutageColor   string `gorm:"column:minor_outage_color" json:"minor_outage_color" yaml:"minor_outage_color"`
     MajorOutageName    string `gorm:"column:major_outage_name" json:"major_outage_name" yaml:"major_outage_name"`
     MajorOutageColor   string `gorm:"column:major_outage_color" json:"major_outage_color" yaml:"major_outage_color"`
-    OutageIsActive     bool   `gorm:"default:false" json:"outage_is_active" yaml:"outage_is_active"`
+    EnableOutage	   bool   `gorm:"column:enable_outage" json:"enable_outage" yaml:"enable_outage"`
+	OutageIsActive     bool   `gorm:"default:false" json:"outage_is_active" yaml:"outage_is_active"`
     OutageSeverity string `gorm:"default:'minor'" json:"outage_severity" yaml:"outage_severity"`
 }
 

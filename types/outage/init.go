@@ -18,7 +18,7 @@ func InitializeFromConfig() (*OutageConfig, error) {
 
 	var outageConfig OutageConfig
 
-	// Essayer de récupérer la configuration dans la table outage
+	// Try to retrieve the configuration from the outage table
 	err := db.FirstOrCreate(&outageConfig, OutageConfig{Id: 1}).Error
 	if err != nil {
 		return nil, fmt.Errorf("failed to initialize Outage: %w", err)

@@ -39,7 +39,7 @@ type DbConfig struct {
 	AdminPassword string `yaml:"admin_password,omitempty" json:"admin_password"`
 	AdminEmail    string `yaml:"admin_email,omitempty" json:"admin_email"`
 
-	// New fields for Intermediate Statuses
+	// New fields for Outage Statuses
 	MinorOutageName   	string 	`gorm:"column:minor_outage_name" json:"minor_outage_name"`
 	MinorOutageColor  	string 	`gorm:"column:minor_outage_color" json:"minor_outage_color"`
 	MajorOutageName   	string 	`gorm:"column:major_outage_name" json:"major_outage_name"`

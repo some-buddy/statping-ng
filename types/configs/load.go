@@ -27,7 +27,7 @@ func Save() error {
 		Language:           p.GetString("LANGUAGE"),
 		AllowReports:       p.GetBool("ALLOW_REPORTS"),
 
-		// Sauvegarde des statuts intermédiaires
+		// Save the outage statuses
 		MinorOutageName:  p.GetString("STATUS_MINOR_OUTAGE_NAME"),
 		MinorOutageColor: p.GetString("STATUS_MINOR_OUTAGE_COLOR"),
 		MajorOutageName:  p.GetString("STATUS_MAJOR_OUTAGE_NAME"),
@@ -129,7 +129,7 @@ func LoadConfigs(cfgFile string) (*DbConfig, error) {
 		Language:          p.GetString("LANGUAGE"),
 		AllowReports:      p.GetBool("ALLOW_REPORTS"),
 
-		// Chargement des nouveaux paramètres de statut intermédiaire
+		// Load the new outage status parameters
 		MinorOutageName:  p.GetString("STATUS_MINOR_OUTAGE_NAME"),
 		MinorOutageColor: p.GetString("STATUS_MINOR_OUTAGE_COLOR"),
 		MajorOutageName:  p.GetString("STATUS_MAJOR_OUTAGE_NAME"),

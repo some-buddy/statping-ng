@@ -302,7 +302,7 @@ class Api {
     }
   }
   
-  // Récupère les services et leurs statuts intermédiaires actifs
+  // Get services with outage status
   async getServicesWithOutage() {
     const services = await axios.get('api/services');
     const outageConfig = await axios.get('api/outage_config');

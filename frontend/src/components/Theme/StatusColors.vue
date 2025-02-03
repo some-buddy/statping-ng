@@ -22,9 +22,9 @@ export default {
   methods: {
     darken(color, amount) {
       if (!color || !color.startsWith('#')) {
-          return '#000000' // Fallback noir
+          return '#000000' // Fallback to black
       }
-      // Implémentation d'une fonction simple de darken
+      // Simple implementation of darken function
       return `color-mix(in srgb, ${color}, black ${amount * 100}%)`
     }
   }

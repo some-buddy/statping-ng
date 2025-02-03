@@ -27,7 +27,7 @@ func LoadConfigForm(r *http.Request) (*DbConfig, error) {
 	language := g("language")
 	reports, _ := strconv.ParseBool(g("send_reports"))
 
-	// New fields for Intermediate Statuses
+	// New fields for Outage Statuses
 	statusMinorOutageName := g("minor_outage_name")
 	statusMinorOutageColor := g("minor_outage_color")
 	statusMajorOutageName := g("major_outage_name")

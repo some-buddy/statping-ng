@@ -26,7 +26,7 @@ func (s *Service) LoadTLSCert() (config *tls.Config, err error) {
 		return
 	}
 
-	// load TLS cert and key from file path or PEM format
+	// Load TLS cert and key from file path or PEM format
 	var cert tls.Certificate
 
 	tlsCertExtension := utils.FileExtension(s.TLSCert.String)
@@ -50,7 +50,7 @@ func (s *Service) LoadTLSCert() (config *tls.Config, err error) {
 		return
 	}
 
-	// create Root CA pool or use Root CA provided
+	// Create Root CA pool or use Root CA provided
 	rootCA := s.TLSCertRoot.String
 	caCert, err := ioutil.ReadFile(rootCA)
 	if err != nil {
@@ -89,7 +89,7 @@ func (s Service) UptimeData(hits []*hits.Hit, fails []*failures.Failure) (*Uptim
 	if len(hits) == 0 {
 		return nil, errors.New("service does not have any successful hits")
 	}
-	// if theres no failures, then its been online 100%,
+	// If there's no failures, then it's been online 100%,
 	// return a series from created time, to current.
 	if len(fails) == 0 {
 		fistHit := hits[0]
@@ -239,7 +239,7 @@ func (s Service) Hash() string {
 	return hex.EncodeToString(h.Sum(nil))
 }
 
-// SelectAllServices returns a slice of *core.Service to be store on []*core.Services
+// SelectAllServices returns a slice of *core.Service to be stored on []*core.Services
 // should only be called once on startup.
 func SelectAllServices(start bool) (map[int64]*Service, error) {
 	if len(allServices) > 0 {
@@ -248,7 +248,7 @@ func SelectAllServices(start bool) (map[int64]*Service, error) {
 	for _, s := range all() {
 		s.Failures = s.AllFailures().LastAmount(limitedFailures)
 		s.prevOnline = true
-		// collect initial service stats
+		 // Collect initial service stats
 		s.UpdateStats()
 		allServices[s.Id] = s
 		if start {
@@ -259,24 +259,24 @@ func SelectAllServices(start bool) (map[int64]*Service, error) {
 }
 
 func (s *Service) UpdateStats() *Service {
-	// Si les statuts intermédiaires sont activés via l'API
+	// If Outage statuses are enabled via the API
 	if s.OutageIsActive {
-		// Appliquer les statuts intermédiaires
+		// Apply Outage statuses
 		if s.MinorOutageName != "" {
-			// Le service est en "Minor Outage"
+			// The service is in "Minor Outage"
 			s.Online = false
 		} else if s.MajorOutageName != "" {
-			// Le service est en "Major Outage"
+			// The service is in "Major Outage"
 			s.Online = false
 		}
 	} else {
-		// Sinon, gérer le statut classique du service (Online / Offline)
+		// Otherwise, handle the classic service status (Online / Offline)
 		if s.Online == false {
-			// Le service est hors ligne
+			// The service is offline
 			s.MinorOutageName = "Offline"
 			s.MinorOutageColor = "red"
 		} else {
-			// Le service est en ligne
+			// The service is online
 			s.MinorOutageName = "Online"
 			s.MinorOutageColor = "green"
 		}
@@ -351,69 +351,8 @@ func (s Service) Downtime() utils.Duration {
 
 // Outage represents the outage configuration for a service.
 type Outage struct {
-	ID                      int    `gorm:"primary_key"`
-	ServiceID               int    `gorm:"index"`
-	OutageIsActive      bool   `gorm:"default:false"`
-	OutageSeverity  string `gorm:"default:''"`
+	ID                      int64    `gorm:"index"`
+	ServiceID               int64    `gorm:"index"`
+	OutageIsActive      	bool   	 `gorm:"default:false"`
+	OutageSeverity  		string 	 `gorm:"default:''"`
 }
-
-// InitializeService initializes the service with default values.
-// func InitializeService() (*Service, error) {
-// 	var service Service
-
-// 	err := database.Database.Model(&Service{}).FirstOrCreate(&service, &Service{}).Error
-// 	if err != nil {
-// 		return nil, fmt.Errorf("failed to initialize Service: %w", err)
-// 	}
-
-// 	if service.ID == 0 {
-// 		service.EnableOutage = false
-// 		service.OutageName = ""
-// 		err := database.Database.Save(&service).Error
-// 		if err != nil {
-// 			return nil, fmt.Errorf("failed to save Service: %w", err)
-// 		}
-// 	}
-
-// 	return &service, nil
-// }
-
-// // UpdateService updates the service configuration in the database.
-// func UpdateService(service *Service) error {
-// 	if err := database.Database.Model(&Service{}).Updates(service).Error; err != nil {
-// 		log.Errorf("Failed to update service: %v", err)
-// 		return err
-// 	}
-// 	return nil
-// }
-
-// // Contrôleur pour gérer les services
-// func GetServicesWithOutageHandler(c *gin.Context) {
-//     var servicesWithOutage []Service
-//     if err := db.Where("is_outage = ?", true).Find(&servicesWithOutage).Error; err != nil {
-//         c.JSON(http.StatusInternalServerError, gin.H{"error": "Unable to fetch services"})
-//         return
-//     }
-//     c.JSON(http.StatusOK, servicesWithOutage)
-// }
-
-// // Fonction pour créer un service avec les valeurs par défaut pour OutageName
-// func CreateService(db *gorm.DB) error {
-//     // Définir les valeurs du service
-//     service := Service{
-//         MinorOutageName:  "Minor Outage",
-//         MinorOutageColor: "Yellow",
-//         MajorOutageName:  "Major Outage",
-//         MajorOutageColor: "Orange",
-//         EnableOutage: true,
-//         IsOutage:   true,
-//     }
-
-//     // Si le champ OutageName est vide, définir une valeur par défaut
-//     if service.OutageName == "" {
-//         service.OutageName = "minor"
-//     }
-
-//     // Sauvegarder la nouvelle entrée dans la base de données
-//     return db.Create(&service).Error
-// }

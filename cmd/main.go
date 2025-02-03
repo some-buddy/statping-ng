@@ -132,7 +132,7 @@ func mainProcess() error {
 		return err
 	}
 
-	// Charger la configuration des statuts intermédiaires
+	// Load outage configuration
 	if utils.Params.GetBool("ENABLE_OUTAGE") {
 		// Initialize status configuration
 		outageConfig, err := outage.InitializeFromConfig()
@@ -140,9 +140,9 @@ func mainProcess() error {
 			log.Fatalf("Error initializing status config: %v", err)
 		}
 
-		log.Info("Intermediate statuses are enabled : %v", outageConfig)
+		log.Info("Outage statuses are enabled : %v", outageConfig)
 	} else {
-		log.Info("Intermediate statuses are disabled.")
+		log.Info("Outage statuses are disabled.")
 	}
 
 	services.LoadServicesYaml()
