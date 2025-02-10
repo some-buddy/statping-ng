@@ -161,10 +161,16 @@ export default new Vuex.Store({
     async loadCore(context) {
       const core = await Api.core()
       const token = await Api.token()
+      const oauth = await Api.oauth()
+      const jwt = await Api.check_token(token)
       context.commit("setCore", core);
-      context.commit('setAdmin', token)
-      context.commit('setCore', core)
-      context.commit('setUser', token !== undefined)
+      if (oauth) {
+        context.commit('setAdmin', jwt.admin);
+      } else {
+        context.commit('setAdmin', token);
+      }
+      context.commit('setCore', core);
+      context.commit('setUser', token !== undefined);
     },
     async loadRequired(context) {
       const groups = await Api.groups()
