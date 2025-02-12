@@ -13,8 +13,10 @@ $black_regular: #333333;
 .mainPage {
     margin-top: 48px;
     background-color: white !important;
-    padding-right: 9px !important;
-    padding-left: 9px !important;;
+    padding-inline: 9px !important;
+    box-shadow: none !important;
+    border-radius: 4px;
+    border: 1px solid $grey_regular;
 }
 
 .logo {
@@ -50,7 +52,7 @@ $black_regular: #333333;
     padding: 13px 16px;
 }
 
-.navbar-nav .router-link-active {
+.navbar-nav .router-link-exact-active {
     background-color: #FFF8E6 !important;
     border-bottom: 4px solid #FCB902;
 }
