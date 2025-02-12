@@ -29,6 +29,7 @@ export default new Vuex.Store({
     users: [],
     notifiers: [],
     checkins: [],
+    incidents: [],
     admin: false,
     user: false,
     loggedIn: false,
@@ -183,17 +184,29 @@ export default new Vuex.Store({
     },
     async loadCore(context) {
       try {
-        const core = await Api.core()
-        const token = await Api.token()
-        const oauth = await Api.oauth()
-        const jwt = await Api.check_token(token)
-        context.commit("setCore", core);
-        if (oauth) {
-          context.commit('setAdmin', jwt.admin);
-        } else {
-          context.commit('setAdmin', token);
+        const token = Api.token()
+        if (!token) {
+          context.commit('setLoggedIn', false);
+          return
         }
-        context.commit('setCore', core);
+        try {
+          const jwt = await Api.check_token(token)
+          const oauth = await Api.oauth()
+          if (oauth) {
+            context.commit('setAdmin', jwt.admin);
+          } else {
+            context.commit('setAdmin', token);
+          }
+          if (jwt.username) {
+            context.commit('setLoggedIn', true);
+          }
+        } catch (e) {
+          console.error(e)
+        }
+      
+        const core = await Api.core()
+
+        context.commit("setCore", core);
         context.commit('setUser', token !== undefined);
       } catch (error) {
         console.error("Erreur lors du chargement de Core :", error)

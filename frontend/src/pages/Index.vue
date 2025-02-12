@@ -103,7 +103,10 @@ export default {
         },
     },
     async mounted() {
-        await this.checkLogin();
+        const result = await this.checkLogin();
+        if (!result) {
+          this.$router.push('/login')
+        }
 
         try {
           await this.$store.dispatch('loadGroups');
@@ -143,6 +146,7 @@ export default {
             if (jwt.username) {
               this.$store.commit('setLoggedIn', true);
             }
+            return true
           } catch (e) {
             console.error(e)
           }
