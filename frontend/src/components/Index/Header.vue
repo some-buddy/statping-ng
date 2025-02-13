@@ -116,7 +116,6 @@ export default {
       },
       isAdmin() {
         const isAdmin = this.$store.state.admin
-        console.log("this.$store.state.admin", isAdmin)
         return isAdmin
     },
     }
