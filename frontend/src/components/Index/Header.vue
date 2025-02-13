@@ -110,16 +110,15 @@
 <script>
 export default {
   name: 'Header',
-  data() {
-      console.log("this.$store.state.admin", this.$store.state.admin)
-      return {
-        isAdmin: this.$store.state.admin
-      }
-    },  
     computed: {
       core() {
           return this.$store.getters.core
-      }
+      },
+      isAdmin() {
+        const isAdmin = this.$store.state.admin
+        console.log("this.$store.state.admin", isAdmin)
+        return isAdmin
+    },
     }
 }
 </script>

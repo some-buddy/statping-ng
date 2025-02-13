@@ -138,7 +138,21 @@ class Api {
   }
 
   async incident_updates(incident) {
-    return axios.get('api/incidents/' + incident.id + '/updates').then(response => (response.data))
+    try {
+      const response = await axios.get(`api/incidents/${incident.id}/updates`);
+      let updates = response.data;
+  
+      // Delete duplicate updates
+      if (Array.isArray(updates) && updates.length > 0 && typeof updates[0] === 'object') {
+        const uniqueUpdates = Array.from(new Set(updates.map(JSON.stringify))).map(JSON.parse);
+        updates = uniqueUpdates;
+      }
+  
+      return updates;
+    } catch (error) {
+      console.error("Erreur lors de la récupération des mises à jour de l'incident :", error);
+      return { erreur: error.message }; // Ou une autre gestion des erreurs selon vos besoins
+    }
   }
 
   async incident_update_create(update) {
@@ -150,7 +164,22 @@ class Api {
   }
 
   async incidents_service(id) {
-    return axios.get('api/services/' + id + '/incidents').then(response => (response.data))
+    try {
+      const response = await axios.get(`api/services/${id}/incidents`);
+      let incidents = response.data;
+  
+      // Remove duplicates (if it's an array of objects)
+      if (Array.isArray(incidents) && incidents.length > 0 && typeof incidents[0] === 'object') {
+        const uniqueIncidents = Array.from(new Set(incidents.map(JSON.stringify))).map(JSON.parse);
+        incidents = uniqueIncidents;
+      }
+  
+      return incidents;
+  
+    } catch (error) {
+      console.error("Error fetching incidents:", error);
+      return { error: error.message }; // Error handling (adapt as needed)
+    }
   }
 
   async incident_create(service_id, data) {

@@ -185,6 +185,9 @@ export default new Vuex.Store({
     async loadCore(context) {
       try {
         const token = Api.token()
+        const core = await Api.core()
+        context.commit("setCore", core);
+        context.commit('setUser', token !== undefined);
         if (!token) {
           context.commit('setLoggedIn', false);
           return
@@ -203,11 +206,6 @@ export default new Vuex.Store({
         } catch (e) {
           console.error(e)
         }
-      
-        const core = await Api.core()
-
-        context.commit("setCore", core);
-        context.commit('setUser', token !== undefined);
       } catch (error) {
         console.error("Erreur lors du chargement de Core :", error)
       }
