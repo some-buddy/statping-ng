@@ -56,3 +56,29 @@ $black_regular: #333333;
     background-color: #FFF8E6 !important;
     border-bottom: 4px solid #FCB902;
 }
+
+.dashboard_card {
+    .failures {
+        display: flex;
+    }
+    .card-header {
+        display: flex;
+        justify-content: space-between;
+        width: 100%;
+
+        h6 {
+            width: 100% !important;
+            display: flex;
+            align-items: center;
+
+            a {
+                width: 100% !important;
+            }
+        }
+    }
+}
+
+.badge-danger {
+    padding: 8px !important;
+    min-height: auto !important;
+}
