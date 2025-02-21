@@ -97,6 +97,12 @@ export default {
             return this.$store.getters.servicesNoGroup
         }
     },
+    async mounted() {
+      const result = await this.checkLogin();
+      if (!result) {
+        this.$router.push('/login')
+      }
+    },
     methods: {
         async checkLogin() {
           const token = this.$cookies.get('statping_auth')
