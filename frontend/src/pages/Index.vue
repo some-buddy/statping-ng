@@ -1,5 +1,5 @@
 <template>
-    <div class="container col-md-7 col-sm-12 sm-container">
+    <div class="container col-md-7 col-sm-12 sm-container mainPage">
 
       <Header/>
 
@@ -39,11 +39,11 @@
 
           <Group v-for="group in groups" v-bind:key="group.id" :group="group" />
 
-          <div class="col-12 full-col-12">
+          <!-- <div class="col-12 full-col-12">
               <div v-for="service in services" :ref="service.id" v-bind:key="service.id">
                   <ServiceBlock :service="service" />
               </div>
-          </div>
+          </div> -->
       </div>
   </div>
 </template>
@@ -104,6 +104,9 @@ export default {
     },
     async mounted() {
         await this.checkLogin();
+        if (!result) {
+          this.$router.push('/login')
+        }
 
         try {
           await this.$store.dispatch('loadGroups');
@@ -129,7 +132,7 @@ export default {
         } finally {
           this.loadingMessages = false;
         }
-      },
+    },
     methods: {
         async checkLogin() {
           const token = this.$cookies.get('statping_auth')

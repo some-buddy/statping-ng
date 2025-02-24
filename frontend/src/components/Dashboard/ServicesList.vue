@@ -32,12 +32,12 @@
                     </span> {{service.name}}
                 </td>
               <td class="d-none d-md-table-cell">
-                    <span class="badge text-uppercase" :class="badgeClass(service)">
+                    <span class="badge" :class="badgeClass(service)">
                         {{service.online ? $t('online') : $t('offline')}}
                     </span>
               </td>
                 <td class="d-none d-md-table-cell">
-                    <span class="badge text-uppercase" :class="{'badge-primary': service.public, 'badge-secondary': !service.public}">
+                    <span class="badge " :class="{'badge-primary': service.public, 'badge-secondary': !service.public}">
                         {{service.public ? $t('public') : $t('private')}}
                     </span>
                 </td>
