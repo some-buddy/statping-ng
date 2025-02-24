@@ -23,7 +23,7 @@
                     {{service.name}}
                     <MessagesIcon :messages="service.messages"/>
                   </router-link>
-                  <span class="badge float-right" :class="badgeClass(service)">{{service.online ? "ONLINE" : "OFFLINE"}}</span>
+                  <span class="badge float-right" :class="badgeClass(service)">{{service.online ? $t('online') : $t('offline')}}</span>
                   <GroupServiceFailures :service="service"/>
                   <IncidentsBlock :service="service"/>
               </div>
