@@ -98,10 +98,35 @@ export default {
         }
     },
     async mounted() {
-      const result = await this.checkLogin();
-      if (!result) {
-        this.$router.push('/login')
-      }
+        const result = await this.checkLogin();
+        if (!result) {
+          this.$router.push('/login')
+        }
+
+        try {
+          await this.$store.dispatch('loadGroups');
+        } catch (error) {
+          console.error("Error loading groups :", error);
+        } finally {
+          this.loadingGroups = false;
+        }
+
+        try {
+          await this.$store.dispatch('loadServices');
+        } catch (error) {
+          console.error("Error loading services :", error);
+        } finally {
+          this.loadingServices = false;
+        }
+
+        try {
+          await this.$store.dispatch('loadMessages');
+          this.messages = this.$store.getters.messages ? this.$store.getters.messages.filter(m => this.inRange(m) && m.service === 0) : null;
+        } catch (error) {
+          console.error("Error loading messages :", error);
+        } finally {
+          this.loadingMessages = false;
+        }
     },
     methods: {
         async checkLogin() {
