@@ -8,7 +8,7 @@
                   {{service.name}}
                   <MessagesIcon :messages="service.messages"/>
                 </router-link>
-                <span class="badge float-right" :class="badgeClass(service)">
+                <span class="badge float-right" :class="serviceBadgeClass(service)">
                     {{service.online ? $t('online') : $t('offline')}}
                 </span>
 
